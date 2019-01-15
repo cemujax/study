@@ -1,0 +1,11 @@
+.index {
+  font-size: 24px;
+  border-bottom: solid 1px blue;
+}
+.detail {
+  font-size: 15px;
+}
+
+li {
+  list-style: none;
+}

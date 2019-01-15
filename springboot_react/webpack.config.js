@@ -3,8 +3,8 @@ var path = require("path");
 module.exports = {
   context: path.resolve(__dirname, "src/main/jsx"),
   entry: {
-    index: "./index.jsx",
-    detail: "./detail.jsx"
+    index: "./IndexPage.jsx",
+    detail: "./DetailPage.jsx"
   },
   devtool: "sourcemaps",
   cache: true,
