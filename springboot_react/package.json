@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "mvnw spring-boot:run",
+    "watch": "node_modules\\.bin\\webpack --watch -d",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
