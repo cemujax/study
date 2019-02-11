@@ -39,17 +39,51 @@ exports.createStory = (event, ctx, cb) => {
 };
 
 exports.readStories = (event, ctx, cb) => {
-  cb(null, createResponse(200, { message: "list" }));
+  ctx.callbackWaitsForEmptyEventLoop = false;
+  connect()
+    .then(() =>
+      Story.find()
+        .sort({ _id: -1 })
+        .limit(20)
+        .lean()
+        .exec()
+    )
+    .then(stories => cb(null, createResponse(200, stories)));
 };
 
 exports.readStory = (event, ctx, cb) => {
-  cb(null, createResponse(200, { message: "read" }));
+  ctx.callbackWaitsForEmptyEventLoop = false;
+  connect()
+    .then(() => Story.findById(event.pathParameters.id).exec())
+    .then(story => {
+      if (!story) {
+        return cb(null, { statusCode: 404 });
+      }
+      cb(null, createResponse(200, story));
+    });
 };
 
 exports.updateStory = (event, ctx, cb) => {
-  cb(null, createResponse(200, { message: "update" }));
+  ctx.callbackWaitsForEmptyEventLoop = false;
+  const update = JSON.parse(event.body);
+  connect()
+    .then(() =>
+      Story.findOneAndUpdate({ _id: event.pathParameters.id }, update, {
+        new: true
+      }).exec()
+    )
+    .then(story => {
+      if (!story) {
+        return cb(null, { statusCode: 404 });
+      }
+      cb(null, createResponse(200, story));
+    });
 };
 
 exports.deleteStory = (event, ctx, cb) => {
-  cb(null, createResponse(200, { message: "delete" }));
+  ctx.callbackWaitsForEmptyEventLoop = false;
+
+  connect()
+    .then(() => Story.remove({ _id: event.pathParameters.id }).exec())
+    .then(() => cb(null, createResponse(204, null)));
 };
