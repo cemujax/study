@@ -1,10 +1,20 @@
 const mongoose = require("mongoose");
 const Story = require("./models/Story");
 
+let connection = null;
+
 const connect = () => {
-  return mongoose.connect(
-    "mongodb://serverless:serverless@ds239128.mlab.com:39128/serverless"
-  );
+  if (connection && mongoose.connection.readyState === 1)
+    return Promise.resolve(connection);
+
+  return mongoose
+    .connect(
+      "mongodb://serverless:serverless@ds239128.mlab.com:39128/serverless"
+    )
+    .then(conn => {
+      connection = conn;
+      return connection;
+    });
 };
 
 const createResponse = (status, body) => ({

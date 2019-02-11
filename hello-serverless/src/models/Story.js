@@ -5,6 +5,6 @@ const StorySchema = new mongoose.Schema({
   body: String
 });
 
-const Story = mongoose.model("Story", StorySchema);
-
-module.exports = Story;
+// Cannot overwrite model once compiled.
+global.Story = global.Story || mongoose.model("Story", StorySchema);
+module.exports = global.Story;
